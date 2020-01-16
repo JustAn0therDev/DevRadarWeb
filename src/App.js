@@ -31,10 +31,9 @@ function App() {
   
       setDevs(response.data.devs);
     }
-    
+
     loadDevs();
     }, [])
-
 
   return (
     //Um "elemento vazio" dentro do React significa uma fragment. Feita para impedir a insercao de divs,
