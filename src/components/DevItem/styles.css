@@ -47,3 +47,31 @@ li.dev-item a {
 li.dev-item a:hover {
     color: #5a2ea6;
 }
+
+.dev-button {
+    width: 100%;
+    border: 0;
+    margin-top: 10px;
+    background: #7d40e7;
+    border-radius: 2px;
+    padding: 15px 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.5s;
+}
+
+.dev-button:hover {
+    background-color: #5a2ea6;
+}
+
+#modify-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 5px;
+}
+
+#modify-buttons button {
+    width: 45%;
+}
