@@ -75,17 +75,3 @@ li.dev-item a:hover {
 #modify-buttons button {
     width: 45%;
 }
-
-#input-update-dev {
-    margin-top: 10px;
-    display: none;
-}
-
-#btn-cancel-update-dev {
-    display: none;
-    margin-left: 5px;
-}
-
-#btn-update-dev {
-    margin-left: 5px;
-}
