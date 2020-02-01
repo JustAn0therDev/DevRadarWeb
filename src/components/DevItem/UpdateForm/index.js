@@ -28,6 +28,14 @@ export default function UpdateForm({dev}) {
             github_username: githubUsername,
             techs
         });
+
+        window.location.assign('/');
+    }
+
+    function cancelUpdate() {
+        let allUpdateFormComponents = document.querySelectorAll('.update-form');
+        setTechs('');
+        allUpdateFormComponents.style.display = 'none';
     }
 
     return(
@@ -39,7 +47,7 @@ export default function UpdateForm({dev}) {
             onChange={(ev) => { ev.preventDefault(); setTechs(ev.target.value) }}
             />
             <button onClick={ (ev) => { ev.preventDefault(); updateTechs(techs) }} className="devButton">Confirmar</button>
-            <button onClick={ console.log() } className="devButton">Cancelar</button>
+            <button onClick={ (ev) => { ev.preventDefault(); cancelUpdate()} } className="devButton">Cancelar</button>
         </div>
     )
 }

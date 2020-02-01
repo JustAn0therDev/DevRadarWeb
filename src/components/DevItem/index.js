@@ -27,6 +27,10 @@ export default function DevItem({ dev, key }) {
         window.location.assign('/');
     }
 
+    const showUpdateForm = () => {
+      
+    }
+
     return (
         <li className="dev-item">
         <header>
@@ -41,14 +45,14 @@ export default function DevItem({ dev, key }) {
         <div id="modify-buttons">
           <button
           type="button" 
-          id="btn-update-dev" 
+          id={`btn-update-${dev}`} 
           className="dev-button" 
-          onClick={(ev) => { ev.preventDefault(); }}>Atualizar techs
+          onClick={(ev) => { ev.preventDefault(); showUpdateForm(); }}>Atualizar techs
           </button>
           <UpdateForm dev={dev} key={key} />
           <button 
           type="button" 
-          id="btn-delete-dev" 
+          id={`btn-delete-${dev}`} 
           className="dev-button" 
           onClick={(ev) => { ev.preventDefault(); deleteDev(dev.github_username) }}>Excluir
           </button>
