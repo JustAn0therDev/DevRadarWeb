@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import './styles.css';
 
 export default function DevItem({ dev }) {
+  const [techs, setTechs] = useState('');
+
+  const [github_username, setGithubUsername] = useState('');
+
+    useEffect(() => {
+      setGithubUsername(dev.github_username);
+    }, []);
+
     const deleteDev = async (github_username) => {
         await api.delete('/devs', {
           headers: {
@@ -14,11 +22,44 @@ export default function DevItem({ dev }) {
           }
         });
 
-        api.get('/devs');
+        window.location.assign('/');
     }
 
-    const updateDev = async () => {
+    const handleUpdateForm = async (btn) => {
+      let cancelUpdateBtn = document.getElementById("btn-cancel-update-dev");
+      let updateBtn = document.getElementById("btn-update-dev");
+      let deleteBtn = document.getElementById("btn-delete-dev");
+      let updateTechsInput = document.getElementById("input-update-dev");
+      deleteBtn.style.display = "none";
+      cancelUpdateBtn.style.display = "inline";
+      updateTechsInput.style.display = "inline";
+      
+      switch (btn.textContent) {
+        case 'Atualizar techs':
+          btn.textContent = 'Confirmar';
+          break;
+        case 'Confirmar':
+          updateDev(techs);
+          break;
+        case 'Cancelar':           
+          deleteBtn.style.display = "inline";
+          updateTechsInput.style.display = "none";
+          updateBtn.textContent = 'Atualizar techs';
+          cancelUpdateBtn.style.display = 'none';
+        break; 
+        default:
+          console.log(btn.textContent);
+          break;
+      }
+    }
 
+    const updateDev = async (techs) => {
+      await api.put('/devs', {
+        github_username,
+        techs
+      });
+
+      window.location.assign('/');
     }
 
     return (
@@ -33,8 +74,29 @@ export default function DevItem({ dev }) {
         <p>{!dev.biography ? "Este usuario nao possui biografia." : dev.biography}</p>
         <a href={`https://github.com/${dev.github_username}`}>Acessar perfil no GitHub</a>
         <div id="modify-buttons">
-          <button type="button" className="dev-button">Atualizar</button>
-          <button type="button" className="dev-button" onClick={(ev) => { ev.preventDefault(); deleteDev(dev.github_username) }}>Excluir</button>
+          <input 
+          type="text" 
+          id="input-update-dev" 
+          onChange={(ev) => { ev.preventDefault(); setTechs(ev.target.value); }}  
+          />
+          <button
+          type="button" 
+          id="btn-update-dev" 
+          className="dev-button" 
+          onClick={(ev) => { ev.preventDefault(); handleUpdateForm(ev.target)}}>Atualizar techs
+          </button>
+          <button
+          type="button" 
+          id="btn-cancel-update-dev" 
+          className="dev-button" 
+          onClick={(ev) => { ev.preventDefault(); handleUpdateForm(ev.target)}}>Cancelar
+          </button>
+          <button 
+          type="button" 
+          id="btn-delete-dev" 
+          className="dev-button" 
+          onClick={(ev) => { ev.preventDefault(); deleteDev(dev.github_username) }}>Excluir
+          </button>
         </div>
       </li>
     )
