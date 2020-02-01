@@ -37,6 +37,12 @@ export default function DevItem({ dev }) {
       switch (btn.textContent) {
         case 'Atualizar techs':
           btn.textContent = 'Confirmar';
+          let response = await api.get('/devs', {
+            params: {
+              github_username
+            }
+          });
+          updateTechsInput.value = response.data.devs[0].techs.join(', '); 
           break;
         case 'Confirmar':
           updateDev(techs);
