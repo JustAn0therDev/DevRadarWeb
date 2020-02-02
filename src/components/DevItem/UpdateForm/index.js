@@ -3,7 +3,7 @@ import api from '../../../services/api';
 import './styles.css';
 import '../../DevItem/styles.css';
 
-export default function UpdateForm({dev}) {
+export default function UpdateForm({ dev }) {
 
     const [githubUsername, setGithubUsername] = useState('');
 
@@ -11,31 +11,29 @@ export default function UpdateForm({dev}) {
 
     useEffect(() => {
         setGithubUsername(dev.github_username);
-            async function getTechs() {
-                let response = await api.get('/devs', {
-                    params: {
-                        github_username: githubUsername
-                    }
-                });
-                setTechs(response.data.devs[0].techs.join(', '));
-                console.log(techs);
-            }
-            getTechs();
-    }, []);
+        setTechs(dev.techs);
+    }, [dev.github_username, dev.techs]);
+
 
     async function updateTechs(techs) {
         await api.put('/devs', {
             github_username: githubUsername,
             techs
         });
-
-        window.location.assign('/');
+        window.location.assign('/')
     }
 
-    function cancelUpdate() {
-        let allUpdateFormComponents = document.querySelectorAll('.update-form');
-        setTechs('');
-        allUpdateFormComponents.style.display = 'none';
+    function cancelUpdate(ev) {
+        ev.preventDefault();
+        ev
+        .currentTarget
+        .parentElement
+        .parentElement
+        .querySelectorAll('button')
+        .forEach(element => {
+            element.style.display = 'inline-block';
+        });
+        ev.currentTarget.parentElement.style.display = 'none';
     }
 
     return(
@@ -47,7 +45,7 @@ export default function UpdateForm({dev}) {
             onChange={(ev) => { ev.preventDefault(); setTechs(ev.target.value) }}
             />
             <button onClick={ (ev) => { ev.preventDefault(); updateTechs(techs) }} className="devButton">Confirmar</button>
-            <button onClick={ (ev) => { ev.preventDefault(); cancelUpdate()} } className="devButton">Cancelar</button>
+            <button onClick={ (ev) => { cancelUpdate(ev) } } className="devButton">Cancelar</button>
         </div>
     )
 }

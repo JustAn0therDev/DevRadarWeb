@@ -5,15 +5,18 @@ import api from '../../services/api';
 import './styles.css';
 
 export default function DevItem({ dev, key }) {
+
   const [techs, setTechs] = useState('');
 
   const [github_username, setGithubUsername] = useState('');
 
     useEffect(() => {
       setGithubUsername(dev.github_username);
-    }, []);
+      setTechs(dev.techs.join(', '));
+    }, [dev.github_username, dev.techs]);
 
-    const deleteDev = async (github_username) => {
+    const deleteDev = async (ev, github_username) => {
+        ev.preventDefault();
         await api.delete('/devs', {
           headers: {
             'Accept': 'application/json',
@@ -27,8 +30,19 @@ export default function DevItem({ dev, key }) {
         window.location.assign('/');
     }
 
-    const showUpdateForm = () => {
-      
+    function showUpdateForm(ev) {
+      ev.preventDefault();
+      let updateForm = ev.currentTarget.nextSibling;
+      let updateButton = ev.currentTarget;
+      let deleteButton = ev.currentTarget
+      .nextSibling
+      .nextSibling;
+
+      updateForm.style.display = 'flex';
+      updateForm.querySelector('input').value = techs;
+
+      updateButton.style.display = 'none';
+      deleteButton.style.display = 'none';
     }
 
     return (
@@ -37,7 +51,7 @@ export default function DevItem({ dev, key }) {
           <img src={dev.avatar_url} alt={!dev.name ? "Foto de perfil do GitHub" : dev.name}/>
           <div className="user-info">
             <strong>{!dev.name ? "Sem nome definido" : dev.name}</strong>
-            <span>{dev.techs.join(', ')}</span>
+            <span>{techs}</span>
           </div>
         </header>
         <p>{!dev.biography ? "Este usuario nao possui biografia." : dev.biography}</p>
@@ -45,16 +59,16 @@ export default function DevItem({ dev, key }) {
         <div id="modify-buttons">
           <button
           type="button" 
-          id={`btn-update-${dev}`} 
+          id={`btn-update-${key}`} 
           className="dev-button" 
-          onClick={(ev) => { ev.preventDefault(); showUpdateForm(); }}>Atualizar techs
+          onClick={(ev) => { showUpdateForm(ev); }}>Atualizar techs
           </button>
           <UpdateForm dev={dev} key={key} />
           <button 
           type="button" 
-          id={`btn-delete-${dev}`} 
+          id={`btn-delete-${key}`} 
           className="dev-button" 
-          onClick={(ev) => { ev.preventDefault(); deleteDev(dev.github_username) }}>Excluir
+          onClick={(ev) => { deleteDev(ev, dev.github_username) }}>Excluir
           </button>
         </div>
       </li>
