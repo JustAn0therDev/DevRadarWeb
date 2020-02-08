@@ -4,7 +4,7 @@ import UpdateForm from './UpdateForm/index';
 import api from '../../services/api';
 import './styles.css';
 
-export default function DevItem({ dev, key }) {
+export default function DevItem({ dev }) {
 
   const [techs, setTechs] = useState('');
 
@@ -55,20 +55,18 @@ export default function DevItem({ dev, key }) {
           </div>
         </header>
         <p>{!dev.biography ? "Este usuario nao possui biografia." : dev.biography}</p>
-        <a href={`https://github.com/${dev.github_username}`}>Acessar perfil no GitHub</a>
+        <a href={`https://github.com/${github_username}`}>Acessar perfil no GitHub</a>
         <div id="modify-buttons">
           <button
-          type="button" 
-          id={`btn-update-${key}`} 
+          type="button"
           className="dev-button" 
           onClick={(ev) => { showUpdateForm(ev); }}>Atualizar techs
           </button>
-          <UpdateForm dev={dev} key={key} />
+          <UpdateForm dev={dev} />
           <button 
           type="button" 
-          id={`btn-delete-${key}`} 
           className="dev-button" 
-          onClick={(ev) => { deleteDev(ev, dev.github_username) }}>Excluir
+          onClick={(ev) => { deleteDev(ev, github_username) }}>Excluir
           </button>
         </div>
       </li>
