@@ -55,7 +55,7 @@ export default function DevItem({ dev }) {
           </div>
         </header>
         <p>{!dev.biography ? "Este usuario nao possui biografia." : dev.biography}</p>
-        <a href={`https://github.com/${github_username}`}>Acessar perfil no GitHub</a>
+        <a href={`https://github.com/${github_username}`} target="_blank">Acessar perfil no GitHub</a>
         <div id="modify-buttons">
           <button
           type="button"
